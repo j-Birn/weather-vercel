@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Select from "react-select";
 import { GlobalSvgSelector } from "../../assets/icons/global/GlobalSvgSelector";
 import { Theme } from "../../context/ThemeContext";
 import { useTheme } from "../../hooks/useTheme";
+import { changeCity } from "../../store/slices/currentWeatherSlice";
 import s from "./Header.module.scss";
 type Props = {};
 
 const Header = (props: Props) => {
   const theme = useTheme();
-  const options = [{ value: "city-1", label: "Syberia" }];
+
   const colorStyles = {
     control: (styles: any) => ({
       ...styles,
@@ -19,15 +21,38 @@ const Header = (props: Props) => {
       border: "none",
       borderRadius: "10px",
       zIndex: 100,
+      cursor: "pointer",
     }),
     singleValue: (styles: any) => ({
       ...styles,
+      color: theme.theme === Theme.DARK ? "#fff" : "#000",
+    }),
+    menuList: (styles: any) => ({
+      ...styles,
+
+      backgroundColor: theme.theme === Theme.DARK ? "#4f4f4f" : "#fff",
       color: theme.theme === Theme.DARK ? "#fff" : "#000",
     }),
   };
 
   const changeTheme = () => {
     theme.changeTheme(theme.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
+  };
+
+  const options = [
+    { value: "moscow", label: "Moscow" },
+    { value: "novosibirsk", label: "Novosibirsk" },
+    { value: "yakutsk", label: "Yakutsk" },
+  ];
+
+  const dispacchio = useDispatch();
+
+  const [option, setOption] = useState<any>("moscow");
+
+  const handleChange = (obj: any) => {
+    setOption(obj.value);
+    console.log(option);
+    dispacchio(changeCity(option));
   };
 
   return (
@@ -43,9 +68,11 @@ const Header = (props: Props) => {
           <GlobalSvgSelector id="change-theme" />
         </div>
         <Select
-          defaultValue={options[0]}
-          styles={colorStyles}
+          value={options.find((obj) => obj.value === option)}
+          onChange={handleChange}
           options={options}
+          placeholder="Choose your city"
+          styles={colorStyles}
         />
       </div>
     </header>

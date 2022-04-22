@@ -1,4 +1,5 @@
 export type Weather = {
+  city: string;
   main: {
     temp: number;
     feels_like: number;

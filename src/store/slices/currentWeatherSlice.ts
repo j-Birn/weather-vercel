@@ -15,6 +15,7 @@ type CurrenWeather = {
 
 const initialState: CurrenWeather = {
   weather: {
+    city: "moscow",
     main: {
       temp: 0,
       feels_like: 0,
@@ -41,6 +42,9 @@ export const currentWeatherSlice = createSlice({
   name: "currentWeather",
   initialState,
   reducers: {
+    changeCity(state, action) {
+      state.weather.city = action.payload;
+    },
     fetchCurrentWeather(state) {
       state.isLoading = true;
     },
@@ -69,6 +73,7 @@ export const currentWeatherSlice = createSlice({
 });
 
 export const {
+  changeCity,
   fetchCurrentWeather,
   fetchCurrentWeatherSucces,
   fetchCurrentWeatherError,

@@ -1,4 +1,4 @@
-@import '../../../../styles/variables.scss';
+@import "../../../../styles/variables.scss";
 
 .this__day_info {
   position: relative;
@@ -36,7 +36,7 @@
 
   .indicator__name,
   .indicator__value {
-    font-size: 14px;
+    font-size: 20px;
   }
   .indicator__name {
     color: $base-color;
