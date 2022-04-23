@@ -1,29 +1,19 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import { useCustomSelector } from "../../hooks/store";
 import { selectCurrentWeather } from "../../store/selectors/selectors";
-import { AppDispatch } from "../../store/store";
-import { fetchWeather } from "../../store/thunks/fetchWeather";
 import ThisDay from "./components/ThisDay/ThisDay";
 import { ThisDayInfo } from "./components/ThisDayInfo/ThisDayInfo";
 import s from "./Home.module.scss";
 type Props = {};
 
 const Home = (props: Props) => {
-  const dispatch = useDispatch<AppDispatch>();
-
   const weather = useCustomSelector(selectCurrentWeather);
-  console.log(weather);
-
-  useEffect(() => {
-    dispatch(fetchWeather(weather.city));
-  }, [weather.city]);
 
   return (
     <>
       <div className={s.home}>
-        <ThisDay weather={weather} />
-        <ThisDayInfo weather={weather} />
+        <ThisDay weather={weather.weather} />
+        <ThisDayInfo weather={weather.weather} />
       </div>
       {/* <Days /> */}
     </>

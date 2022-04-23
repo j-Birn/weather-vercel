@@ -1,59 +1,34 @@
-import React, { useState } from "react";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Select from "react-select";
 import { GlobalSvgSelector } from "../../assets/icons/global/GlobalSvgSelector";
 import { Theme } from "../../context/ThemeContext";
+import { useCustomSelector } from "../../hooks/store";
 import { useTheme } from "../../hooks/useTheme";
+import { selectCurrentWeather } from "../../store/selectors/selectors";
 import { changeCity } from "../../store/slices/currentWeatherSlice";
+import { AppDispatch } from "../../store/store";
+import { fetchWeather } from "../../store/thunks/fetchWeather";
 import s from "./Header.module.scss";
 type Props = {};
-
 const Header = (props: Props) => {
   const theme = useTheme();
-
-  const colorStyles = {
-    control: (styles: any) => ({
-      ...styles,
-      backgroundColor:
-        theme.theme === Theme.DARK ? "#4f4f4f" : "rgba(71,147,255,0.2)",
-      width: "194px",
-      height: "37px",
-      border: "none",
-      borderRadius: "10px",
-      zIndex: 100,
-      cursor: "pointer",
-    }),
-    singleValue: (styles: any) => ({
-      ...styles,
-      color: theme.theme === Theme.DARK ? "#fff" : "#000",
-    }),
-    menuList: (styles: any) => ({
-      ...styles,
-
-      backgroundColor: theme.theme === Theme.DARK ? "#4f4f4f" : "#fff",
-      color: theme.theme === Theme.DARK ? "#fff" : "#000",
-    }),
-  };
-
   const changeTheme = () => {
     theme.changeTheme(theme.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
   };
 
-  const options = [
-    { value: "moscow", label: "Moscow" },
-    { value: "novosibirsk", label: "Novosibirsk" },
-    { value: "yakutsk", label: "Yakutsk" },
-  ];
-
-  const dispacchio = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const weather = useCustomSelector(selectCurrentWeather);
 
   const [option, setOption] = useState<any>("moscow");
 
-  const handleChange = (obj: any) => {
-    setOption(obj.value);
-    console.log(option);
-    dispacchio(changeCity(option));
-  };
+  useEffect(() => {
+    dispatch(changeCity(option));
+  }, [option]);
+
+  useEffect(() => {
+    dispatch(fetchWeather(weather.city));
+  }, [weather.city]);
 
   return (
     <header className={s.header}>
@@ -67,13 +42,30 @@ const Header = (props: Props) => {
         <div className={s.changeTheme} onClick={changeTheme}>
           <GlobalSvgSelector id="change-theme" />
         </div>
-        <Select
-          value={options.find((obj) => obj.value === option)}
-          onChange={handleChange}
-          options={options}
-          placeholder="Choose your city"
-          styles={colorStyles}
-        />
+
+        <select
+          className={s.select}
+          value={option}
+          onChange={(e) => setOption(e.target.value)}
+        >
+          <option value="moscow">Москва</option>
+          <option value="toronto">Торонто</option>
+          <option value="berlin">Берлин</option>
+        </select>
+
+        {/* <FormControl fullWidth>
+          <InputLabel>City</InputLabel>
+          <Select
+            sx={{
+              bgcolor: "#fff",
+            }}
+            label="City"
+          >
+            <MenuItem value="moscow">moscow</MenuItem>
+            <MenuItem>2</MenuItem>
+            <MenuItem>3</MenuItem>
+          </Select>
+        </FormControl> */}
       </div>
     </header>
   );
