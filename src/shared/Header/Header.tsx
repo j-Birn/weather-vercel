@@ -1,6 +1,6 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import Select from "react-select";
 import { GlobalSvgSelector } from "../../assets/icons/global/GlobalSvgSelector";
 import { Theme } from "../../context/ThemeContext";
 import { useCustomSelector } from "../../hooks/store";
@@ -19,6 +19,37 @@ const Header = (props: Props) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const weather = useCustomSelector(selectCurrentWeather);
+
+  const data = [
+    { value: "moscow", label: "Москва" },
+    { value: "berlin", label: "Берлин" },
+    { value: "toronto", label: "Торонто" },
+  ];
+
+  const selectStyles = {
+    control: (styles: any) => ({
+      ...styles,
+      backgroundColor:
+        theme.theme === Theme.DARK ? "#4F4F4F" : "rgba(71, 147, 255, 0.2)",
+      width: "194px",
+      height: "37px",
+      border: "none",
+      borderRadius: "10px",
+      zIndex: 100,
+    }),
+    menu: (styles: any) => ({
+      ...styles,
+      backgroundColor: theme.theme === Theme.DARK ? "#4F4F4F" : "#fff",
+    }),
+    option: (styles: any) => ({
+      ...styles,
+      color: theme.theme === Theme.DARK ? "#fff" : "#000",
+    }),
+    singleValue: (styles: any) => ({
+      ...styles,
+      color: theme.theme === Theme.DARK ? "#fff" : "#000",
+    }),
+  };
 
   const [option, setOption] = useState<any>("moscow");
 
@@ -43,7 +74,15 @@ const Header = (props: Props) => {
           <GlobalSvgSelector id="change-theme" />
         </div>
 
-        <select
+        <Select
+          value={data.find((obj) => obj.value === option)}
+          onChange={(e) => setOption(e?.value)}
+          defaultValue={data[0]}
+          styles={selectStyles}
+          options={data}
+        />
+
+        {/* <select
           className={s.select}
           value={option}
           onChange={(e) => setOption(e.target.value)}
@@ -51,21 +90,7 @@ const Header = (props: Props) => {
           <option value="moscow">Москва</option>
           <option value="toronto">Торонто</option>
           <option value="berlin">Берлин</option>
-        </select>
-
-        {/* <FormControl fullWidth>
-          <InputLabel>City</InputLabel>
-          <Select
-            sx={{
-              bgcolor: "#fff",
-            }}
-            label="City"
-          >
-            <MenuItem value="moscow">moscow</MenuItem>
-            <MenuItem>2</MenuItem>
-            <MenuItem>3</MenuItem>
-          </Select>
-        </FormControl> */}
+        </select> */}
       </div>
     </header>
   );
