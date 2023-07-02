@@ -1,5 +1,7 @@
 # Weather APP # Приложение погоды
 
+## App | Приложение: https://weather-vercel-dmk36rpkw-jbirn.vercel.app/
+
 ## Stack :
 
 - TypeScript
@@ -8,7 +10,7 @@
 - Redux Toolkit
 - OpenWeather API
 
-## How to run | Как запустить
+## How to run locally | Как запустить локально
 
 ru: Для запуска требуется создать .env.local файл в корне приложения
 
