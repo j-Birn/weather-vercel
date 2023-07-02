@@ -17,9 +17,6 @@ const ThisDay = ({ weather }: Props) => {
         <GlobalSvgSelector id="sun" />
       </div>
       <div className={s.bottom__block}>
-        {/* <div className={s.time}>
-          Время: <span>21:54</span>
-        </div> */}
         <div className={s.city}>
           <span>{weather.name}</span>
         </div>

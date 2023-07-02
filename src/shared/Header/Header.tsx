@@ -10,8 +10,8 @@ import { changeCity } from "../../store/slices/currentWeatherSlice";
 import { AppDispatch } from "../../store/store";
 import { fetchWeather } from "../../store/thunks/fetchWeather";
 import s from "./Header.module.scss";
-type Props = {};
-const Header = (props: Props) => {
+
+const Header = () => {
   const theme = useTheme();
   const changeTheme = () => {
     theme.changeTheme(theme.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
@@ -22,8 +22,9 @@ const Header = (props: Props) => {
 
   const data = [
     { value: "moscow", label: "Москва" },
-    { value: "berlin", label: "Берлин" },
+    { value: "madrid", label: "Мадрид" },
     { value: "toronto", label: "Торонто" },
+    { value: "osaka", label: "Осака" },
   ];
 
   const selectStyles = {
@@ -36,6 +37,9 @@ const Header = (props: Props) => {
       border: "none",
       borderRadius: "10px",
       zIndex: 100,
+      ":hover": {
+        cursor: "pointer",
+      },
     }),
     menu: (styles: any) => ({
       ...styles,
@@ -44,6 +48,9 @@ const Header = (props: Props) => {
     option: (styles: any) => ({
       ...styles,
       color: theme.theme === Theme.DARK ? "#fff" : "#000",
+      ":hover": {
+        cursor: "pointer",
+      },
     }),
     singleValue: (styles: any) => ({
       ...styles,
@@ -68,12 +75,13 @@ const Header = (props: Props) => {
           <GlobalSvgSelector id="header-logo" />
         </div>
         <div className={s.title}>Погода</div>
-      </div>
-      <div className={s.wrapper}>
+
         <div className={s.changeTheme} onClick={changeTheme}>
           <GlobalSvgSelector id="change-theme" />
+          <p>сменить тему</p>
         </div>
-
+      </div>
+      <div className={s.wrapper}>
         <Select
           value={data.find((obj) => obj.value === option)}
           onChange={(e) => setOption(e?.value)}
@@ -81,16 +89,6 @@ const Header = (props: Props) => {
           styles={selectStyles}
           options={data}
         />
-
-        {/* <select
-          className={s.select}
-          value={option}
-          onChange={(e) => setOption(e.target.value)}
-        >
-          <option value="moscow">Москва</option>
-          <option value="toronto">Торонто</option>
-          <option value="berlin">Берлин</option>
-        </select> */}
       </div>
     </header>
   );

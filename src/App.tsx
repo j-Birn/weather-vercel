@@ -5,12 +5,10 @@ import Header from "./shared/Header/Header";
 function App() {
   return (
     <>
-      {/* <Popup /> */}
       <div className="container">
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/month-stat" element={<MonthStat />} /> */}
         </Routes>
       </div>
     </>
